@@ -7,12 +7,6 @@ on:
 jobs:
   integration:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        event_type: ['push', 'pull_request']
-        output: ['json', ',', ' ', '_<br />&nbsp;&nbsp;_']
-        fileOutput: ['json', ',', ' ', '_<br />&nbsp;&nbsp;_']
     steps:
       - uses: step-security/harden-runner@v2
         with:
@@ -23,31 +17,9 @@ jobs:
           node-version-file: 'package.json'
       - run: yarn build-package
       - uses: ./
-        id: file_changes_build_pr
-        if: matrix.event_type == 'pull_request'
-        with:
-          githubRepo: trilom/file-changes-action
-          prNumber: 83
-          output: ${{ matrix.output }}
-          fileOutput: ${{ matrix.fileOutput }}
-      - uses: ./
-        id: file_changes_build_push
-        if: matrix.event_type == 'push'
-        with:
-          githubRepo: trilom/file-changes-action
-          pushBefore: 6ac7697cd1c4f23a08d4d4edbe7dab06b34c58a2
-          pushAfter: 4ee1a1a2515f4ac1b90a56aaeb060b97f20c8968
-          output: ${{ matrix.output }}
-          fileOutput: ${{ matrix.fileOutput }}
+        id: file_changes
       - run: |
-          mv $HOME/files* .
-          chmod +x test.sh && ./test.sh
-        working-directory: .github/actions/integration
-        if: success()
-        env:
-          fileOutput: ${{ matrix.fileOutput }}
-          output: ${{ matrix.output }}
-          files: ${{ format('{0}{1}', steps.file_changes_build_pr.outputs.files, steps.file_changes_build_push.outputs.files ) }}
-          files_modified: ${{ format('{0}{1}', steps.file_changes_build_pr.outputs.files_modified, steps.file_changes_build_push.outputs.files_modified ) }}
-          files_added: ${{ format('{0}{1}', steps.file_changes_build_pr.outputs.files_added, steps.file_changes_build_push.outputs.files_added ) }}
-          files_removed: ${{ format('{0}{1}', steps.file_changes_build_pr.outputs.files_removed, steps.file_changes_build_push.outputs.files_removed ) }}
+          echo "files: ${{ steps.file_changes.outputs.files }}"
+          echo "files_added: ${{ steps.file_changes.outputs.files_added }}"
+          echo "files_modified: ${{ steps.file_changes.outputs.files_modified }}"
+          echo "files_removed: ${{ steps.file_changes.outputs.files_removed }}"
