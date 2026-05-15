@@ -53,16 +53,8 @@ export function getInputs(): Inputs {
     } as Inputs
   } catch (error) {
     const eString = `Received an issue getting action inputs.`
-    const retVars = Object.fromEntries(
-      Object.entries(process.env).filter(
-        key =>
-          key[0].includes('GITHUB') ||
-          key[0].includes('INPUT_') ||
-          key[0] === 'HOME'
-      )
-    )
     throw new Error(
-      getErrorString('getInputs Error', 500, getInputs.name, eString, retVars)
+      getErrorString('getInputs Error', 500, getInputs.name, eString)
     )
   }
 }
