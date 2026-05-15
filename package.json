@@ -37,7 +37,7 @@
   "dependencies": {
     "@actions/core": "^1.2.3",
     "@actions/github": "^2.1.1",
-    "axios": "^1.16.1"
+    "axios": "^1.16.0"
   },
   "devDependencies": {
     "@octokit/types": "^2.5.0",

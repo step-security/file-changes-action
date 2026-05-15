@@ -13,23 +13,20 @@ jobs:
         event_type: ['push', 'pull_request']
         output: ['json', ',', ' ', '_<br />&nbsp;&nbsp;_']
         fileOutput: ['json', ',', ' ', '_<br />&nbsp;&nbsp;_']
-    if: >-
-      ( startsWith(github.head_ref, '1.')
-        || startsWith(github.head_ref, '2.'))
-      ||
-      contains(github.event.head_commit.message, 'Release merge from')
-      ||
-      github.event_name == 'schedule'
     steps:
       - uses: step-security/harden-runner@v2
         with:
           egress-policy: audit
       - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: 'package.json'
       - run: yarn build-package
       - uses: ./
         id: file_changes_build_pr
         if: matrix.event_type == 'pull_request'
         with:
+          githubRepo: trilom/file-changes-action
           prNumber: 83
           output: ${{ matrix.output }}
           fileOutput: ${{ matrix.fileOutput }}
@@ -37,6 +34,7 @@ jobs:
         id: file_changes_build_push
         if: matrix.event_type == 'push'
         with:
+          githubRepo: trilom/file-changes-action
           pushBefore: 6ac7697cd1c4f23a08d4d4edbe7dab06b34c58a2
           pushAfter: 4ee1a1a2515f4ac1b90a56aaeb060b97f20c8968
           output: ${{ matrix.output }}
