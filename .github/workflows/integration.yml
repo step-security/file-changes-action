@@ -1,0 +1,25 @@
+name: Integration Tests
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: 'package.json'
+      - run: yarn build-package
+      - uses: ./
+        id: file_changes
+      - run: |
+          echo "files: ${{ steps.file_changes.outputs.files }}"
+          echo "files_added: ${{ steps.file_changes.outputs.files_added }}"
+          echo "files_modified: ${{ steps.file_changes.outputs.files_modified }}"
+          echo "files_removed: ${{ steps.file_changes.outputs.files_removed }}"
