@@ -5,7 +5,7 @@ import {octokitMock} from '../octokit'
 
 function getGitHubMock(context: Context): GitHubMock {
   return {
-    GitHub: jest.fn(token => {
+    getOctokit: jest.fn(token => {
       // console.log(`I am authorizing GitHub with token: ${token}`)
       if (!token)
         throw new Error(

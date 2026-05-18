@@ -1,0 +1,19 @@
+[[IgnoredVulns]]
+id = "GHSA-2mjp-6q6p-2qxm"
+reason = "undici: HTTP request smuggling via duplicate Content-Length headers in array form. Not exploitable: requires the application to pass user-controlled headers directly to undici's low-level request APIs; this action never calls undici directly and all octokit calls use fixed GitHub API endpoints with headers managed by the library."
+
+[[IgnoredVulns]]
+id = "GHSA-4992-7rv2-5pvq"
+reason = "undici: CRLF injection via the upgrade option of client.request(). Not exploitable: requires the application to pass a user-controlled string to the upgrade field of a direct undici client.request() call; this action never calls undici directly and makes no protocol-upgrade requests."
+
+[[IgnoredVulns]]
+id = "GHSA-g9mf-h72j-4rw9"
+reason = "undici: DoS via unbounded decompression chain in HTTP responses. Not exploitable: requires a malicious or compromised HTTP server to return deeply nested Content-Encoding; this action only contacts the GitHub API and a single fixed subscription endpoint, neither of which is attacker-controlled."
+
+[[IgnoredVulns]]
+id = "GHSA-v9p9-hfj2-hcw8"
+reason = "undici: DoS/process crash via invalid server_max_window_bits in WebSocket permessage-deflate handshake. Not exploitable: requires an active WebSocket connection to a malicious server; this action makes no WebSocket connections, only plain HTTPS REST calls via octokit and axios."
+
+[[IgnoredVulns]]
+id = "GHSA-vrm6-8vpv-qv8q"
+reason = "undici: DoS via WebSocket decompression bomb causing unbounded memory consumption. Not exploitable: requires an active WebSocket connection to a malicious server; this action makes no WebSocket connections, only plain HTTPS REST calls via octokit and axios."
