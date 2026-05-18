@@ -12,21 +12,23 @@ export const octokitMock: OctokitMock = {
     data: EndpointOptions,
     cb?: (response: OctokitResponse<any>) => Promise<any[]>
   ) => paginate(data, cb),
-  pulls: {
-    listFiles: Object.assign((data: EndpointOptions) => listFiles(data), {
-      endpoint: {
-        merge: (data: EndpointOptions) => endpointMerge(data)
-      }
-    })
-  },
-  repos: {
-    compareCommits: Object.assign(
-      (data: EndpointOptions) => compareCommits(data),
-      {
+  rest: {
+    pulls: {
+      listFiles: Object.assign((data: EndpointOptions) => listFiles(data), {
         endpoint: {
           merge: (data: EndpointOptions) => endpointMerge(data)
         }
-      }
-    )
+      })
+    },
+    repos: {
+      compareCommits: Object.assign(
+        (data: EndpointOptions) => compareCommits(data),
+        {
+          endpoint: {
+            merge: (data: EndpointOptions) => endpointMerge(data)
+          }
+        }
+      )
+    }
   }
 }

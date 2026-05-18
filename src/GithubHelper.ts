@@ -1,16 +1,19 @@
-import {GitHub} from '@actions/github'
+import {getOctokit} from '@actions/github'
+import {OctokitResponse} from '@octokit/types'
 import {GitHubFile} from 'typings/GitHubFile'
 import {Inferred} from 'typings/Inferred'
 import {getErrorString} from './UtilsHelper'
+
+type GitHubClient = ReturnType<typeof getOctokit>
 /**
  * @function initClient
  * @throws {Error} not sure what might trigger this, but it will throw an error.
  * @param token github token to add to client
  * @returns authenticated github client
  */
-export function initClient(token: string): GitHub {
+export function initClient(token: string): GitHubClient {
   try {
-    return new GitHub(token)
+    return getOctokit(token)
   } catch (error) {
     const eString = `There was an error creating github client. Please check your token.`
     throw new Error(
@@ -28,20 +31,20 @@ export function initClient(token: string): GitHub {
  * @returns Promise of array of changed files
  */
 export async function getChangedPRFiles(
-  client: GitHub,
+  client: GitHubClient,
   repo: string,
   owner: string,
   pullNumber: number
 ): Promise<GitHubFile[]> {
   try {
-    const options = client.pulls.listFiles.endpoint.merge({
+    const options = client.rest.pulls.listFiles.endpoint.merge({
       owner,
       repo,
       pull_number: pullNumber
     })
     const files: GitHubFile[] = await client.paginate(
       options,
-      response => response.data
+      (response: OctokitResponse<any>) => response.data
     )
     return files
   } catch (error) {
@@ -77,14 +80,14 @@ export async function getChangedPRFiles(
  * @returns Promise of array of changed files
  */
 export async function getChangedPushFiles(
-  client: GitHub,
+  client: GitHubClient,
   repo: string,
   owner: string,
   base: string,
   head: string
 ): Promise<GitHubFile[]> {
   try {
-    const options = client.repos.compareCommits.endpoint.merge({
+    const options = client.rest.repos.compareCommits.endpoint.merge({
       owner,
       repo,
       base,
@@ -92,7 +95,7 @@ export async function getChangedPushFiles(
     })
     const files: GitHubFile[] = await client.paginate(
       options,
-      response => response.data.files
+      (response: OctokitResponse<any>) => response.data.files
     )
     return files
   } catch (error) {
@@ -125,7 +128,7 @@ export async function getChangedPushFiles(
  * @returns Promise of an array of changed PR or push files
  */
 export async function getChangedFiles(
-  client: GitHub,
+  client: GitHubClient,
   repoFull: string,
   {before, after, pr = NaN}: Inferred
 ): Promise<GitHubFile[]> {

@@ -42,9 +42,9 @@ describe('Testing GithubHelper.ts...', () => {
             )
           else {
             gh = require('../GithubHelper').initClient(input)
-            const {GitHub} = require('@actions/github')
-            expect(GitHub).toHaveBeenCalledTimes(1)
-            expect(GitHub).toHaveBeenCalledWith(expected)
+            const {getOctokit} = require('@actions/github')
+            expect(getOctokit).toHaveBeenCalledTimes(1)
+            expect(getOctokit).toHaveBeenCalledWith(expected)
             expect(gh).toEqual(env.octokitMock)
           }
         }

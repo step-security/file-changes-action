@@ -136,7 +136,7 @@ describe.each(p.testEvents)('Testing Env object with %s event...', event => {
       // console.log(JSON.stringify(env))
       const request = p.OctokitPullsListFilesRequest
       const response = p.OctokitPullsListFilesResponse
-      return env.octokitMock.pulls.listFiles(request).then(data => {
+      return env.octokitMock.rest.pulls.listFiles(request).then(data => {
         expect(data.data).toBe(response)
         return expect(data.data.length).toBe(7)
       })
@@ -144,7 +144,7 @@ describe.each(p.testEvents)('Testing Env object with %s event...', event => {
     it('...Env mocks Octokit.pulls.listFiles.endpoint.merge', () => {
       const request = p.OctokitPullsListFilesEndpointMergeRequest
       const response = p.OctokitPullsListFilesEndpointMergeResponse
-      const data = env.octokitMock.pulls.listFiles.endpoint.merge(request)
+      const data = env.octokitMock.rest.pulls.listFiles.endpoint.merge(request)
       expect(data).toStrictEqual(response)
     })
     it('...Env mocks Octokit.repos.paginate for pr', () => {
@@ -172,7 +172,7 @@ describe.each(p.testEvents)('Testing Env object with %s event...', event => {
     it('...Env mocks Octokit.repos.compareCommits', () => {
       const request = p.OctokitReposCompareCommitsRequest
       const response = p.OctokitReposCompareCommitsResponse
-      return env.octokitMock.repos.compareCommits(request).then(data => {
+      return env.octokitMock.rest.repos.compareCommits(request).then(data => {
         expect(data.data.files).toBe(response)
         return expect(data.data.files.length).toBe(7)
       })
@@ -180,7 +180,7 @@ describe.each(p.testEvents)('Testing Env object with %s event...', event => {
     it('...Env mocks Octokit.repos.compareCommits.endpoint.merge', () => {
       const request = p.OctokitReposCompareCommitsEndpointMergeRequest
       const response = p.OctokitReposCompareCommitsEndpointMergeResponse
-      const data = env.octokitMock.repos.compareCommits.endpoint.merge(request)
+      const data = env.octokitMock.rest.repos.compareCommits.endpoint.merge(request)
       expect(data).toStrictEqual(response)
     })
     it('...Env mocks Octokit.repos.paginate for push', async () => {
