@@ -1,0 +1,18 @@
+{
+   "schema_version": "1",
+   "onboarding_type": "copied",
+   "archived": false,
+   "maintained_action_name": "step-security/file-changes-action",
+   "upstream_full_repo_name": "trilom/file-changes-action",
+   "action_type": "node",
+   "last_release": {
+     "tag_name": "v1.2.4",
+     "created_at": "2026-05-18T06:48:10Z",
+     "published_at": "2026-05-18T16:31:35Z"
+   },
+   "sync": {
+     "ignore_presets": [
+       "defaults_v1"
+     ]
+   }
+ }
